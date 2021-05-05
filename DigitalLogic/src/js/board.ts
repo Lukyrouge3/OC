@@ -5,8 +5,9 @@ import Pin, {PinType} from "./pin";
 import CustomChip from "./custom_chip";
 import {AndChip, NotChip} from "./builtin_chips";
 import {BoardPort} from "./board_port";
+import TruthTable from "./util/truth_table";
 
-export default class Board{
+export default class Board {
     public chips: List<Chip>;
     public inputs: List<BoardPort>;
     public outputs: List<BoardPort>;
@@ -30,6 +31,8 @@ export default class Board{
 
         this.createInput(this.height / 2);
         this.createOutput(this.height / 2);
+
+
     }
 
     findPinAt(x: number, y: number): Pin {
@@ -64,14 +67,9 @@ export default class Board{
     }
 
     findChipAt(x: number, y: number): Chip {
-        let chip: Chip;
-        this.chips.foreach(c => {
-            if (c.isInside(x, y)) {
-                chip = c;
-                return;
-            }
-        });
-        return chip;
+        return this.chips.find(c => {
+            return c.isInside(x, y);
+        }, true);
     }
 
     draw(p5: P5): void {
@@ -79,29 +77,32 @@ export default class Board{
         this.inputs.foreach(i => i.draw(p5));
         this.outputs.foreach(i => i.draw(p5));
 
-        p5.push();
-        let dx = 0;
-        p5.textSize(20);
-        p5.textAlign(p5.CENTER, p5.CENTER);
-        this.customChips.foreach((c, i) => {
-            p5.fill(c.chipColor);
-            p5.stroke(255);
-            p5.rect(100 + dx, p5.height - 40, p5.textWidth(c.chipName) + 20, 30);
-            p5.noStroke();
-            p5.fill(255);
-            p5.text(c.chipName, 100+dx, p5.height-40, p5.textWidth(c.chipName) + 20, 30);
-            dx += p5.textWidth(c.chipName) + 25;
-        });
-        p5.pop();
+        // p5.push();
+        // let dx = 0;
+        // p5.textSize(20);
+        // p5.textAlign(p5.CENTER, p5.CENTER);
+        // p5.fill(c.chipColor);
+        // p5.stroke(255);
+        // p5.rect(100 + dx, p5.height - 40, p5.textWidth(c.chipName) + 20, 30);
+        // p5.noStroke();
+        // p5.fill(255);
+        // p5.text(c.chipName, 100 + dx, p5.height - 40, p5.textWidth(c.chipName) + 20, 30);
+        // dx += p5.textWidth(c.chipName) + 25;
 
+        // p5.pop();
     }
 
     mousePressed(p5: P5): void {
-        this.chips.foreach(c => c.mousePressed(p5));
         if (p5.mouseButton == p5.RIGHT) {
             this.inputs.foreach(i => i.mousePressed(p5));
             this.outputs.foreach(i => i.mousePressed(p5));
-            console.log(p5.mouseButton);
+        } else {
+            let chip = this.findChipAt(p5.mouseX, p5.mouseY);
+            if (chip) {
+                chip.mousePressed(p5);
+                this.chips.bringFirst(chip);
+            }
+
         }
     }
 
@@ -151,5 +152,11 @@ export default class Board{
 
     createOutput(y: number) {
         this.outputs.add(new BoardPort(y, this.width - 100, "Output " + this.outputs.length, PinType.ChipInput))
+    }
+
+    pack() {
+        let truth = TruthTable.fromBoard(this);
+        let name = prompt("Please enter the new chip's name");
+        this.customChips.add(new CustomChip())
     }
 }

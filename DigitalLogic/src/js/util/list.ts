@@ -1,5 +1,5 @@
 export default class List<T> {
-    protected items: Array<T>;
+    items: Array<T>;
 
     constructor(items?) {
         if (items) this.items = items;
@@ -34,5 +34,17 @@ export default class List<T> {
         this.items = [];
     }
 
+    filter(filter: (T) => boolean): List<T> {
+        return new List<T>(this.items.filter(filter));
+    }
 
+    find(filter: (T) => boolean, backwards?: boolean): T {
+        if (backwards) return this.items.reverse().find(filter);
+        return this.items.find(filter);
+    }
+
+    bringFirst(el: T): void {
+        this.items.splice(this.items.indexOf(el), 1);
+        this.items.push(el);
+    }
 }
