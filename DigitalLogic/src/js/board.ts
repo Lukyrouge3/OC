@@ -6,6 +6,9 @@ import CustomChip from "./custom_chip";
 import {AndChip, NotChip} from "./builtin_chips";
 import {BoardPort} from "./board_port";
 import TruthTable from "./util/truth_table";
+import {createButton} from "./sketch";
+
+export type ChipHolder = { truthTable: TruthTable, name: string, color: string, inputs: string[], outputs: string[] }
 
 export default class Board {
     public chips: List<Chip>;
@@ -16,23 +19,25 @@ export default class Board {
     public width: number;
     public height: number;
 
-    public customChips: List<typeof CustomChip>;
+    public customChips: List<ChipHolder>;
 
     constructor(width: number, height: number) {
         this.width = width;
         this.height = height;
         Board.instance = this;
+        this.init();
+    }
+
+    init() {
         this.chips = new List<Chip>();
         this.inputs = new List<BoardPort>();
         this.outputs = new List<BoardPort>();
-        this.customChips = new List<typeof CustomChip>();
+        this.customChips = new List<ChipHolder>();
         this.customChips.add(AndChip);
         this.customChips.add(NotChip);
 
         this.createInput(this.height / 2);
         this.createOutput(this.height / 2);
-
-
     }
 
     findPinAt(x: number, y: number): Pin {
@@ -157,6 +162,18 @@ export default class Board {
     pack() {
         let truth = TruthTable.fromBoard(this);
         let name = prompt("Please enter the new chip's name");
-        this.customChips.add(new CustomChip())
+        this.customChips.add({
+            truthTable: truth,
+            name,
+            color: "rgb(0,0,0)",
+            inputs: this.inputs.items.map(p => p.pin.pinName),
+            outputs: this.outputs.items.map(p => p.pin.pinName)
+        })
+        createButton(this.customChips.get(this.customChips.length - 1), this);
+        this.clear();
+    }
+
+    clear() {
+        this.init();
     }
 }
