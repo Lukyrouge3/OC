@@ -4,8 +4,12 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/DigitalLogic/.cache" />
       <excludeFolder url="file://$MODULE_DIR$/DigitalLogic/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/chess/.cache" />
+      <excludeFolder url="file://$MODULE_DIR$/chess/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/chess/dist" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="terminal" />
   </component>
 </module>
