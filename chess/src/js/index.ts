@@ -88,4 +88,4 @@ import CustomLoader from "./customLoader";
 import {PieceType} from "./piece";
 
 let loader = new CustomLoader();
-setTimeout(() => console.log(loader), 1000);
+console.log(loader.models[0]);

@@ -27,13 +27,12 @@ export default class CustomLoader {
         if (!this.models || this.models.size == 0) {
             this.models = new Map();
             fileNames.forEach((f, i) => {
-                loader.load("models/" + f + ".STL", geometry => {
+                loader.loadAsync("models/" + f + ".STL", () => {
+                }).then(geometry => {
                     let mesh = new Mesh(geometry, material);
                     mesh.scale.set(.01, .01, .01);
                     this.models.set(i, mesh);
-                    if (this.models.size == fileNames.length) this.ready = true;
-                }, () => {
-                }, error => console.log(error));
+                }, reason => console.log("Error while loading model " + f, reason));
             });
         }
     }
