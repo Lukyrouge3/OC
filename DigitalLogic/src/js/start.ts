@@ -19,7 +19,7 @@ export default class Start {
     }
 
     setup() {
-        this.addText("Bienvenue !", 30, 3);
+        // this.addText("Bienvenue !", 30, 3);
         this.addText("Ici, vous allez pouvoir découvrir\nLes bases de la logique", 20, 5)
     }
 

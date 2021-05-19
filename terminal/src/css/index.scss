@@ -1,0 +1,14 @@
+body{
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.terminal {
+  background: #232323;
+  color: white;
+  font-family: 'Courier New', monospace;
+  min-width: 200px;
+  min-height: 200px;
+  padding: 15px;
+}

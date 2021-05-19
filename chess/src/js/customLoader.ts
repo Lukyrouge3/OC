@@ -1,5 +1,6 @@
-import {DoubleSide, Mesh, MeshStandardMaterial} from "three";
+import {BufferGeometry, DoubleSide, Mesh, MeshStandardMaterial} from "three";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
+import {Geometry} from "three/examples/jsm/deprecated/Geometry";
 
 const fileNames = ["Bishop", "King", "Knight", "Pawn", "Queen", "Rook"];
 const material = new MeshStandardMaterial({
@@ -16,24 +17,29 @@ const material = new MeshStandardMaterial({
 
 export default class CustomLoader {
     models: Map<number, Mesh>;
-    ready = false;
+    loaded = false;
 
     constructor() {
-        this.load();
     }
 
-    load() {
+    async get(index): Promise<Mesh> {
+        if (!this.loaded) await this.load();
+        return this.models.get(index);
+    }
+
+    async load() {
         let loader = new STLLoader();
         if (!this.models || this.models.size == 0) {
             this.models = new Map();
-            fileNames.forEach((f, i) => {
-                loader.loadAsync("models/" + f + ".STL", () => {
-                }).then(geometry => {
-                    let mesh = new Mesh(geometry, material);
-                    mesh.scale.set(.01, .01, .01);
-                    this.models.set(i, mesh);
-                }, reason => console.log("Error while loading model " + f, reason));
-            });
+            for (const f of fileNames) {
+                let i = fileNames.indexOf(f);
+                let geometry = await loader.loadAsync("models/" + f + ".STL", () => {
+                });
+                let mesh = new Mesh(geometry, material);
+                mesh.scale.set(.01, .01, .01);
+                this.models.set(i, mesh);
+            }
         }
+        this.loaded = true;
     }
 }

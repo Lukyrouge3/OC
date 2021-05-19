@@ -168,7 +168,7 @@ export default class Board {
             color: "rgb(0,0,0)",
             inputs: this.inputs.items.map(p => p.pin.pinName),
             outputs: this.outputs.items.map(p => p.pin.pinName)
-        })
+        });
         createButton(this.customChips.get(this.customChips.length - 1), this);
         this.clear();
     }
