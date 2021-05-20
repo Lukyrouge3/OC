@@ -1,4 +1,4 @@
-import {BufferGeometry, DoubleSide, Mesh, MeshStandardMaterial} from "three";
+import {BufferGeometry, DoubleSide, Mesh, MeshBasicMaterial, MeshStandardMaterial} from "three";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 import {Geometry} from "three/examples/jsm/deprecated/Geometry";
 
@@ -11,9 +11,10 @@ const material = new MeshStandardMaterial({
     roughness: .1,
     emissive: 0x0,
     metalness: 0,
-    transparent: true,
-    opacity: 0.6
+    transparent: false,
+    opacity: 0.9
 });
+// const material = new MeshBasicMaterial({side: DoubleSide});
 
 export default class CustomLoader {
     models: Map<number, Mesh>;
