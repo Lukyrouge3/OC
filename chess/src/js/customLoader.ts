@@ -1,4 +1,4 @@
-import {BufferGeometry, DoubleSide, Mesh, MeshBasicMaterial, MeshStandardMaterial} from "three";
+import {BufferGeometry, DoubleSide, FrontSide, Mesh, MeshBasicMaterial, MeshStandardMaterial} from "three";
 import {STLLoader} from "three/examples/jsm/loaders/STLLoader";
 import {Geometry} from "three/examples/jsm/deprecated/Geometry";
 
@@ -6,13 +6,13 @@ const fileNames = ["Bishop", "King", "Knight", "Pawn", "Queen", "Rook"];
 const material = new MeshStandardMaterial({
     depthTest: true,
     depthWrite: true,
-    side: DoubleSide,
+    side: FrontSide,
     color: 0xffffff,
-    roughness: .1,
+    roughness: .7,
     emissive: 0x0,
-    metalness: 0,
-    transparent: false,
-    opacity: 0.9
+    metalness: .9,
+    transparent: true,
+    opacity: 1
 });
 // const material = new MeshBasicMaterial({side: DoubleSide});
 
