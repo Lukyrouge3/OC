@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "parcel chess/src/index.html --open",
-    "build": "parcel build src/index.html"
+    "build": "parcel build chess/src/index.html"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
